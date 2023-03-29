@@ -1,0 +1,8 @@
+{
+    "Routes": [
+        
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "https://localhost:8010"
+    }
+}

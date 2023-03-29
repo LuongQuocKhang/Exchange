@@ -1,0 +1,49 @@
+syntax = "proto3";
+option csharp_namespace = "Exchange.Identity.GRPC.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service AccountProtoService {
+	rpc AuthenticateJWTToken(AuthenticateJWT) returns (JWTResponse);
+	rpc AddJWTTokenToWhiteList(AddJWTToken) returns (AddJWTTokenToWhiteListResponse);
+}
+
+message JWTRequest {
+	string user_name = 1;
+	string access_token = 2;
+	string refresh_token = 3;
+	google.protobuf.Timestamp access_token_expired_in = 4;
+	google.protobuf.Timestamp refresh_token_expired_in = 5;
+	string Password = 6;
+	
+}
+message JWTResponse {
+	string access_token = 1;
+	string refresh_token = 2;
+	bool isVerified = 6;
+	bool isExpired = 7;
+}
+
+message AuthenticateJWT {
+	string user_name = 1;
+	string access_token = 2;
+	string refresh_token = 3;
+	google.protobuf.Timestamp access_token_expired_in = 4;
+	google.protobuf.Timestamp refresh_token_expired_in = 5;
+	bool isVerified = 6;
+	bool isExpired = 7;
+	string Password = 8;
+}
+
+message AddJWTToken {
+	string user_name = 1;
+	string access_token = 2;
+	string refresh_token = 3;
+	google.protobuf.Timestamp  access_token_expired_in = 4;
+	google.protobuf.Timestamp  refresh_token_expired_in = 5;
+	string Password = 6;
+}
+
+message AddJWTTokenToWhiteListResponse {
+	bool success = 1;
+}
