@@ -11,6 +11,18 @@ builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
+var authenticationProviderKey = builder.Configuration["AuthenticationProviderKey"];
+
+builder.Services.AddAuthentication()
+    .AddJwtBearer(authenticationProviderKey, x =>
+    {
+        x.Authority = builder.Configuration["IdentityServerURL"];
+        x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateAudience = false,
+        };
+    });
+
 builder.Services.AddOcelot().AddCacheManager(settings => settings.WithDictionaryHandle());
 
 var app = builder.Build();

@@ -1,6 +1,21 @@
 {
     "Routes": [
-        
+        {
+            "DownstreamPathTemplate": "/api/order",
+            "DownstreamSchema": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": "8001"
+                }
+            ],
+            "UpstreamPathTemplate": "/order",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProdiverKey": "IdentityApiKey",
+                "AllowedScopes": []
+            }
+        }
     ],
     "GlobalConfiguration": {
         "BaseUrl": "https://localhost:8010"
