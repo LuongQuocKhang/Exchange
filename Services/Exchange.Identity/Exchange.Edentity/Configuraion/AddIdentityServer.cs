@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using Exchange.Identity;
 
 namespace Exchange.Edentity.Configuraion
 {
@@ -56,6 +57,7 @@ namespace Exchange.Edentity.Configuraion
                     .AddInMemoryClients(Clients)
                     .AddInMemoryIdentityResources(IdentityResources);
 
+            services.AddIdentityInfrastructure(configuration);
 
             return services;
         }

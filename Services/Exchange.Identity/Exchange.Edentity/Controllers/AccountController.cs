@@ -58,37 +58,36 @@ namespace Exchange.Identity.Controllers
             return Ok(response);
         }
 
-        //[Route("[action]")]
-        //[HttpPost]
-        //[ProducesResponseType(typeof(IEnumerable<RequestReponseModel>), (int)HttpStatusCode.OK)]
-        //public async Task<ActionResult<RequestReponseModel>> AuthorizeJWTToken([FromBody] JWTRequestAuthorize requestData)
-        //{
+        [Route("[action]")]
+        [HttpPost]
+        [ProducesResponseType(typeof(IEnumerable<RequestReponseModel>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<RequestReponseModel>> AuthorizeJWTToken([FromBody] JWTRequestAuthorize requestData)
+        {
 
-        //    var response = new RequestReponseModel();
-        //    try
-        //    {
-        //        var authenticateJWT = _mapper.Map<AuthenticateJWT>(requestData);
-        //        var jwtResponse = await _exchangeIdentityGrpcService.AuthenticateJWTToken(authenticateJWT);
-        //        if (jwtResponse.IsVerified)
-        //        {
-        //            response.StatusCode = HttpStatusCode.OK;
-        //            response.Content = "Token verified successfully";
-        //            response.IsSuccess = true;
-        //        }
-        //        else
-        //        {
-        //            response.StatusCode = HttpStatusCode.OK;
-        //            response.Content = $"Token verified failed, Token Expierd: {jwtResponse.IsExpired}";
-        //            response.IsSuccess = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.IsSuccess = false;
-        //        response.ErrorMessage = ex.Message;
-        //        response.StatusCode = HttpStatusCode.BadRequest;
-        //    }
-        //    return Ok(response);
-        //}
+            var response = new RequestReponseModel();
+            try
+            {
+                var jwtResponse = await _accountService.AuthorizeJWTToken(requestData);
+                if (jwtResponse.IsVerified)
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Content = "Token verified successfully";
+                    response.IsSuccess = true;
+                }
+                else
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Content = $"Token verified failed, Token Expierd: {jwtResponse.IsExpired}";
+                    response.IsSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.ErrorMessage = ex.Message;
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
+            return Ok(response);
+        }
     }
 }
