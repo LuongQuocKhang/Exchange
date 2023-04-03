@@ -1,6 +1,10 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Ocelot.Values;
+using OcelotApiGateway.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,22 +15,24 @@ builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-var authenticationProviderKey = builder.Configuration["AuthenticationProviderKey"];
-
-builder.Services.AddAuthentication()
-    .AddJwtBearer(authenticationProviderKey, x =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        x.Authority = builder.Configuration["IdentityServerURL"];
-        x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        options.Authority = builder.Configuration["ApiEndPoint:IdentityServerURL"];
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
             ValidateAudience = false,
+            
         };
     });
 
-builder.Services.AddOcelot().AddCacheManager(settings => settings.WithDictionaryHandle());
+builder.Services.AddOcelot()
+    .AddCacheManager(settings => settings.WithDictionaryHandle())
+    .AddDelegatingHandler<JWTAuthenticationHandler>();
 
 var app = builder.Build();
 
 await app.UseOcelot();
+app.UseAuthentication();
 
 app.Run();

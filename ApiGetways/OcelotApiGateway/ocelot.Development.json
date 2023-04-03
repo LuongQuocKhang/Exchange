@@ -1,19 +1,105 @@
 {
     "Routes": [
         {
-            "DownstreamPathTemplate": "/api/order",
+            "DownstreamPathTemplate": "/api/v1/Order",
             "DownstreamSchema": "https",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": "8001"
+                    "Port": "8002"
                 }
             ],
-            "UpstreamPathTemplate": "/order",
-            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "UpstreamPathTemplate": "/Order",
+            "UpstreamHttpMethod": [
+                "POST",
+                "PUT"
+            ], // PlaceOrder, UpdateOrder
             "AuthenticationOptions": {
-                "AuthenticationProdiverKey": "IdentityApiKey",
-                "AllowedScopes": []
+                "AuthenticationProdiverKey": "Bearer",
+                "AllowedScopes": [
+                ]
+            },
+            "DelegatingHandlers": [
+                "JWTAuthenticationHandler"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Order/CloseOrder",
+            "DownstreamSchema": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": "8002"
+                }
+            ],
+            "UpstreamPathTemplate": "/order/CloseOrder",
+            "UpstreamHttpMethod": [
+                "DELETE"
+            ], // CloseOrder
+            "AuthenticationOptions": {
+                "AuthenticationProdiverKey": "Bearer",
+                "AllowedScopes": [
+                ]
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Order/CancelOrder",
+            "DownstreamSchema": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": "8002"
+                }
+            ],
+            "UpstreamPathTemplate": "/order/CancelOrder",
+            "UpstreamHttpMethod": [
+                "DELETE"
+            ], // CancelOrder
+            "AuthenticationOptions": {
+                "AuthenticationProdiverKey": "Bearer",
+                "AllowedScopes": [
+                ]
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Order/GetAllOrders",
+            "DownstreamSchema": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": "8002"
+                }
+            ],
+            "UpstreamPathTemplate": "/order/GetAllOrders",
+            "UpstreamHttpMethod": [
+                "GET"
+            ], // CancelOrder
+            "AuthenticationOptions": {
+                "AuthenticationProdiverKey": "Bearer",
+                "AllowedScopes": [
+                ]
+            },
+            "DelegatingHandlers": [
+                "JWTAuthenticationHandler"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Order/GetCurrentOpenOrders",
+            "DownstreamSchema": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": "8002"
+                }
+            ],
+            "UpstreamPathTemplate": "/order/GetCurrentOpenOrders",
+            "UpstreamHttpMethod": [
+                "GET"
+            ], // GetCurrentOpenOrders
+            "AuthenticationOptions": {
+                "AuthenticationProdiverKey": "Bearer",
+                "AllowedScopes": [
+                ]
             }
         }
     ],

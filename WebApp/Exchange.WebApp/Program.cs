@@ -35,7 +35,7 @@ if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"ClientApp",
 
 builder.Services.AddHttpClient("ExchangeAPIClient", client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["ApiGateWayURL"]); // API GATEWAY URL
+    client.BaseAddress = new Uri(builder.Configuration["ApiEndPoint:ApiGateWayURL"]); // API GATEWAY URL
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 }).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
@@ -49,7 +49,7 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
-    options.Authority = builder.Configuration["IdentityServerURL"];
+    options.Authority = builder.Configuration["ApiEndPoint:IdentityServerURL"];
 
     options.ClientId = "movies_mvc_client";
     options.ClientSecret = "secret";
