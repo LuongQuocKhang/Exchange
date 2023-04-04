@@ -95,7 +95,8 @@ namespace Exchange.Identity.Repositories
                 response.IsVerified = true;
 
                 // Create new token
-                await AddNewJWTTokenToWhiteListAsync(model.UserName);
+                var newToken = await AddNewJWTTokenToWhiteListAsync(model.UserName);
+                response.AccessToken = newToken;
             }
             return response;
         }
@@ -141,7 +142,7 @@ namespace Exchange.Identity.Repositories
             await Task.Delay(1000);
         }
 
-        private async Task AddNewJWTTokenToWhiteListAsync(string userName)
+        private async Task<string> AddNewJWTTokenToWhiteListAsync(string userName)
         {
             var client = new HttpClient();
 
@@ -170,7 +171,11 @@ namespace Exchange.Identity.Repositories
 
                 _appDbContext.TBL_ADM_JWT_WHITE_LIST.Add(newTokenWhiteList);
                 _appDbContext.SaveChanges();
+
+                return newAccessToken;
             }
+
+            return string.Empty;
         }
     }
 }

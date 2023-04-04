@@ -34,6 +34,7 @@ namespace Exchange.Identity.Controllers
                 response.StatusCode = result.StatusCode;
                 response.IsSuccess = result.StatusCode == HttpStatusCode.OK;
                 response.ErrorMessage = result.Message;
+                response.Content = result.AccessToken;
 
                 return response;
             }
