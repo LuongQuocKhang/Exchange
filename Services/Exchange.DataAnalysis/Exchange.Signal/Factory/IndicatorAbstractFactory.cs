@@ -6,17 +6,17 @@ namespace Exchange.Signal.Factory
 {
     public static class IndicatorAbstractFactory
     {
-        public static ISignalFactory GetIndicatorFactory(Indicator indicator)
+        public static ISignalFactory GetIndicatorFactory(TechnicalIndicator indicator)
         {
             switch (indicator)
             {
-                case Indicator.RSI:
+                case TechnicalIndicator.RSI:
                     return new RsiFactory();
-                case Indicator.TREND_LINE:
+                case TechnicalIndicator.TREND_LINE:
                     return new RsiFactory();
-                case Indicator.EMA_CROSS:
+                case TechnicalIndicator.EMA_CROSS:
                     return new CrossEmaFactory();
-                case Indicator.SUPER_TREND:
+                case TechnicalIndicator.SUPER_TREND:
                     return new SuperTrendFactory();
                 default:
                     return null;

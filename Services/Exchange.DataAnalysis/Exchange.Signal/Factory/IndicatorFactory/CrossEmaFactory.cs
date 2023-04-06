@@ -1,16 +1,16 @@
 ﻿using Exchange.Data.Entities;
-using Exchange.Data.Models;
+using Skender.Stock.Indicators;
 
 namespace Exchange.Signal.Factory.IndicatorFactory
 {
     public class CrossEmaFactory : ISignalFactory
     {
-        public Task<IEnumerable<Signals>> CalculateSignalsByHistoricalData(IEnumerable<Quote> quotes)
+        public Task<IEnumerable<Signals>> GetSignalsByIndicatorAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Signals>> GetSignalsByIndicatorAsync()
+        IEnumerable<Signals> ISignalFactory.CalculateSignalsByHistoricalData(IEnumerable<Quote> quotes, string symbol)
         {
             throw new NotImplementedException();
         }

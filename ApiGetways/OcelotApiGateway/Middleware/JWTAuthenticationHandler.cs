@@ -1,8 +1,7 @@
 ﻿namespace OcelotApiGateway.Middleware
 {
-    public class JWTAuthenticationHandler : DelegatingHandler
+    public class JwtAuthenticationHandler : DelegatingHandler
     {
-
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var responseMessage = new HttpResponseMessage();
@@ -22,7 +21,9 @@
                     return responseMessage;
                 }
 
-                // Check WhiteList
+                var httpClient = new HttpClient();
+
+
             }
             else
             {

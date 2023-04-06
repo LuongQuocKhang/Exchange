@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddOcelot()
     .AddCacheManager(settings => settings.WithDictionaryHandle())
-    .AddDelegatingHandler<JWTAuthenticationHandler>();
+    .AddDelegatingHandler<JwtAuthenticationHandler>();
 
 var app = builder.Build();
 

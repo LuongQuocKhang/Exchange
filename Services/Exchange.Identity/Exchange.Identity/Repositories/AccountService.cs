@@ -52,7 +52,7 @@ namespace Exchange.Identity.Repositories
             }
             else
             {
-                if (accessTokenInfo.IsExpired == true)
+                if (accessTokenInfo.IsExpired)
                 {
                     await RevokeAccessTokenAsync(model.AccessToken);
 
@@ -67,9 +67,48 @@ namespace Exchange.Identity.Repositories
                 DateTime accessTokenExpiredIn = accessTokenInfo.AccessTokenExpiredIn;
                 if (DateTime.Now > accessTokenExpiredIn)
                 {
+                    DateTime refreshTokenExpiredIn = accessTokenInfo.RefreshTokenExpiredIn;
 
+                    if(DateTime.Now > refreshTokenExpiredIn)
+                    {
+                        // return to login page
+                    }
+                    else
+                    {
+                        // use refresh token to get new token
+                        var client = new HttpClient();
+
+                        var tokenResponse = await client.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest()
+                        {
+                            Address = "https://localhost:8000/connect/authorize",
+                            ClientId = "45786368616e6765436c69656e74",
+                            ClientSecret = "45786368616e6765436c69656e7453656372656374",
+                            GrantType = GrantType.AuthorizationCode
+                        });
+
+                        if (!tokenResponse.IsError)
+                        {
+                            //tokenResponse.
+                        }
+                    }
                 }
-                DateTime refreshTokenExpiredIn = accessTokenInfo.RefreshTokenExpiredIn;
+                else
+                {
+                    var client = new HttpClient();
+
+                    var tokenResponse = await client.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest()
+                    {
+                        Address = "https://localhost:8000/connect/authorize",
+                        ClientId = "45786368616e6765436c69656e74",
+                        ClientSecret = "45786368616e6765436c69656e7453656372656374",
+                        GrantType = GrantType.AuthorizationCode
+                    });
+
+                    if (!tokenResponse.IsError)
+                    {
+                        //tokenResponse.
+                    }
+                }
             }
 
             return response;
@@ -166,7 +205,9 @@ namespace Exchange.Identity.Repositories
                     AccessToken = newAccessToken,
                     AccessTokenExpiredIn = accessTokenExpiredIn,
                     IsExpired = false,
-                    UserId = userName
+                    UserId = userName,
+                    RefreshToken = tokenResponse.RefreshToken,
+                    RefreshTokenExpiredIn = DateTime.Now.AddMinutes(60)
                 };
 
                 _appDbContext.TBL_ADM_JWT_WHITE_LIST.Add(newTokenWhiteList);
