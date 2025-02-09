@@ -44,5 +44,5 @@ jobs:
 
           & "$SonarScannerPath" begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="$ENV:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
           cd Exchange
-          dotnet build || exit 1
-          & "$SonarScannerPath" end /d:sonar.token="$ENV:SONAR_TOKEN" || exit 1
+          dotnet build
+          & "$SonarScannerPath" end /d:sonar.token="$ENV:SONAR_TOKEN"
