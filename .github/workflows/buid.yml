@@ -32,15 +32,15 @@ jobs:
 
       - name: Install SonarScanner
         run: |
-          dotnet tool install dotnet-sonarscanner --tool-path .\.sonar\scanner --version 5.9.0 --verbosity detailed
+          dotnet tool install dotnet-sonarscanner --tool-path ./.sonar/scanner --version 5.9.0 --verbosity detailed
           echo "SonarScanner Installation Complete"
 
       - name: Build and Analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_SCANNER_PATH: ${{ env.SONAR_SCANNER_PATH }}
+          SONAR_SCANNER_PATH: ./.sonar/scanner
         run: |
-          $SonarScannerPath = "$ENV:SONAR_SCANNER_PATH"
+          $SonarScannerPath = "./.sonar/scanner/dotnet-sonarscanner"
           if (-not (Test-Path -Path $SonarScannerPath)) {
             Write-Error "SonarScanner not found at: $SonarScannerPath. Check installation output above."
             exit 1
