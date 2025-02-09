@@ -32,22 +32,17 @@ jobs:
 
       - name: Install SonarScanner
         run: |
-          dotnet tool install dotnet-sonarscanner --tool-path ./.sonar/scanner --version 5.9.0 --verbosity detailed
+          dotnet tool install dotnet-sonarscanner --tool-path .\.sonar\scanner --version 5.9.0 --verbosity detailed
           echo "SonarScanner Installation Complete"
 
       - name: Build and Analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_SCANNER_PATH: ./.sonar/scanner
+          SONAR_SCANNER_PATH: .\.sonar\scanner
         run: |
-          $SonarScannerPath = Join-Path ./.sonar/scanner "dotnet-sonarscanner.dll"
+          $SonarScannerPath = ".\.sonar\scanner"
 
-          if (!(Test-Path -Path $SonarScannerPath)) {
-            Write-Error "SonarScanner not found at: $SonarScannerPath. Check installation output above."
-            exit 1
-          }
-
-          & "$SonarScannerPath" dotnet-sonarscanner begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="$ENV:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
+          & "$SonarScannerPath" begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="$ENV:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
           cd Exchange
           dotnet build
-          & "$SonarScannerPath" dotnet-sonarscanner end /d:sonar.token="$ENV:SONAR_TOKEN"
+          & "$SonarScannerPath" end /d:sonar.token="$ENV:SONAR_TOKEN"
