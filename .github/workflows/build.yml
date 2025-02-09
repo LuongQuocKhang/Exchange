@@ -43,7 +43,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path ".\.tools"
       - name: Install dotnet-reportgenerator locally
         shell: powershell
-        run: dotnet tool install -g dotnet-reportgenerator --tool-path ".\.tools"
+        run: dotnet tool install dotnet-reportgenerator --tool-path ".\.tools"
 
       - name: Build with Code Coverage
         env:
