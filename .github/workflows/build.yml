@@ -37,27 +37,29 @@ jobs:
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --global --tool-path .\.sonar\scanner
-      - name: Install dotnet-reportgenerator (if needed)
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Create directory for tools
         shell: powershell
-        run: dotnet tool install -g dotnet-reportgenerator --global --tool-path .\.sonar\reportgenerator
+        run: New-Item -ItemType Directory -Force -Path ".\.tools"
+      - name: Install dotnet-reportgenerator locally
+        shell: powershell
+        run: dotnet tool install -g dotnet-reportgenerator --tool-path ".\.tools"
 
       - name: Build with Code Coverage
         env:
-          DOTNET_REPORTGENERATOR_VERSION: 4.8.10  # Or latest version
+          DOTNET_REPORTGENERATOR_VERSION: 4.8.10  # Or latest version, check for updates
         shell: powershell
         run: |
           cd Exchange
           dotnet build -c Release --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-          dotnet reportgenerator -reports:"Exchange\coverage.cobertura.xml" -targetdir:"Exchange\CoverageReport"
+          ".\.tools\dotnet-reportgenerator.exe" -reports:"Exchange\coverage.cobertura.xml" -targetdir:"Exchange\CoverageReport"
 
       - name: Analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner dotnet-sonarscanner begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths="Exchange\TestResults\*.trx" /d:sonar.coverage.reportPaths="Exchange\CoverageReport\Cobertura.xml"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths="Exchange\TestResults\*.trx" /d:sonar.coverage.reportPaths="Exchange\CoverageReport\Cobertura.xml"
           cd Exchange
           dotnet build
-          .\.sonar\scanner dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
