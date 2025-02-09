@@ -40,7 +40,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_SCANNER_PATH: ./.sonar/scanner
         run: |
-          $SonarScannerPath = "./.sonar/scanner/dotnet-sonarscanner"
+          $SonarScannerPath = "./.sonar/scanner/"
           if (-not (Test-Path -Path $SonarScannerPath)) {
             Write-Error "SonarScanner not found at: $SonarScannerPath. Check installation output above."
             exit 1
