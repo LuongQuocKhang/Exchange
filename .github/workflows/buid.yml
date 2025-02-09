@@ -35,12 +35,6 @@ jobs:
           dotnet tool install dotnet-sonarscanner --tool-path .\.sonar\scanner --version 5.9.0 --verbosity detailed
           echo "SonarScanner Installation Complete"
 
-      - name: Check SonarScanner Installation
-        run: |
-          echo "SonarScanner Path: ${{ env.SONAR_SCANNER_PATH }}"
-          ls -l ${{ env.SONAR_SCANNER_PATH }}
-          dotnet --version
-
       - name: Build and Analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
