@@ -1,4 +1,3 @@
-
 name: SonarQube
 on:
   push:
@@ -6,6 +5,7 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Build and analyze
@@ -15,35 +15,38 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
+          distribution: 'zulu'
+
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Cache SonarQube Cloud packages
+          fetch-depth: 0
+
+      - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarQube Cloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v4
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: Install SonarQube Cloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: powershell
+          path: |
+            ~/.sonar/cache
+            ~/.nuget/packages
+          key: ${{ runner.os }}-sonar-${{ hashFiles('**/sonar-project.properties') }}
+          restore-keys: ${{ runner.os }}-sonar-
+
+      - name: Install SonarScanner
         run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Build and analyze
+          dotnet tool install dotnet-sonarscanner --tool-path .\.sonar\scanner --version 5.9.0 #Specify version for consistency
+          echo "::set-env name=SONAR_SCANNER_PATH::$(Get-Item -Path .\.sonar\scanner\dotnet-sonarscanner.dll | Resolve-Path)"
+
+      - name: Build and Analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
+          SONAR_SCANNER_PATH: ${{ env.SONAR_SCANNER_PATH }} #Use the environment variable
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          $SonarScannerPath = "$ENV:SONAR_SCANNER_PATH"
+          if (-not (Test-Path -Path $SonarScannerPath)) {
+            Write-Error "SonarScanner not found at: $SonarScannerPath.  Check installation."
+            exit 1
+          }
+
+          & "$SonarScannerPath" begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="$ENV:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
           cd Exchange
-          dotnet build
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet build || exit 1 #Exit if build fails
+          & "$SonarScannerPath" end /d:sonar.token="$ENV:SONAR_TOKEN" || exit 1 #Exit if end fails
