@@ -40,13 +40,13 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_SCANNER_PATH: ./.sonar/scanner
         run: |
-          $SonarScannerPath = "./.sonar/scanner/"
+          $SonarScannerPath = "./.sonar/scanner"
           if (-not (Test-Path -Path $SonarScannerPath)) {
             Write-Error "SonarScanner not found at: $SonarScannerPath. Check installation output above."
             exit 1
           }
 
-          & "$SonarScannerPath" dotnet-sonarscanner begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="$ENV:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
+          & "$SonarScannerPath" begin /k:"LuongQuocKhang_Exchange" /o:"exchange" /d:sonar.token="$ENV:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
           cd Exchange
-          dotnet build || exit 1
-          & "$SonarScannerPath" dotnet-sonarscanner end /d:sonar.token="$ENV:SONAR_TOKEN" || exit 1
+          dotnet build
+          & "$SonarScannerPath" end /d:sonar.token="$ENV:SONAR_TOKEN"
