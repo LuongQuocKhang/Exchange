@@ -9,7 +9,10 @@
   <ItemGroup>
     <Folder Include="Abstractions\" />
     <Folder Include="Features\Future\GetPositions\" />
-    <Folder Include="Features\Future\PlaceLimitOrder\" />
+    <Folder Include="Features\Future\CancelOrder\" />
+    <Folder Include="Features\Future\ClosePosition\" />
+    <Folder Include="Features\Future\UpdateOrder\" />
+    <Folder Include="Features\Future\PlaceMarketOrder\" />
     <Folder Include="Features\Spot\" />
     <Folder Include="Services\" />
     <Folder Include="ViewModel\" />
