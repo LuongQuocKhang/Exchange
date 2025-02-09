@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Features\Future\GetPositions\" />
+    <Folder Include="Features\Future\PlaceLimitOrder\" />
+    <Folder Include="Features\Spot\" />
+    <Folder Include="Services\" />
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlock\Exchange.BuildingBlock\Exchange.BuildingBlock.csproj" />
+  </ItemGroup>
+
+</Project>

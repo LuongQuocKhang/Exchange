@@ -1,0 +1,24 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Exchange/.vs/Exchange
+/Exchange/src/ApiGateway/Exchange.ApiGateway/obj
+/Exchange/.vs/ProjectEvaluation
+/Exchange/src/BuildingBlock/Exchange.BuildingBlock/bin/Debug/net9.0
+/Exchange/src/BuildingBlock/Exchange.BuildingBlock/obj
+/Exchange/src/Identity/Exchange.Identity.Api/obj
+/Exchange/src/Identity/Exchange.Identity.Application/obj
+/Exchange/src/Identity/Exchange.Identity.Domain/obj
+/Exchange/src/Identity/Exchange.Identity.Infrastructure/obj
+/Exchange/src/Services/Signal/Exchange.Signal.Api/obj
+/Exchange/src/Services/Signal/Exchange.Signal.Application/obj
+/Exchange/src/Services/Signal/Exchange.Signal.Domain/obj
+/Exchange/src/Services/Signal/Exchange.Signal.Infrastructure/obj
+/Exchange/src/Services/Trading/Exchange.Trading.Api/bin/Debug/net9.0
+/Exchange/src/Services/Trading/Exchange.Trading.Api/obj
+/Exchange/src/Services/Trading/Exchange.Trading.Application/bin/Debug/net9.0
+/Exchange/src/Services/Trading/Exchange.Trading.Application/obj
+/Exchange/src/Services/Trading/Exchange.Trading.Domain/obj
+/Exchange/src/Services/Trading/Exchange.Trading.Infrastructure/obj
